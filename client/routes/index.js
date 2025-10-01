@@ -6,12 +6,8 @@ router.get('/chat', (req, res) => {
 
 
 
-router.get('/user', (req, res) => {
-  res.render('pages/userInput');
-});
-
 router.get('/', (req, res) => {
-  res.render('pages/userInput');
+  res.render('pages/chat');
 });
 
 module.exports = router;
