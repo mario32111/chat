@@ -48,20 +48,19 @@
         const messagesContainer = document.getElementById('messages');
         const messageInput = document.getElementById('messageInput');
         // Define un nombre de usuario local fijo
-        const LOCAL_USER_NAME = 'Tú'; 
+        const LOCAL_USER_NAME = 'Tú';
 
         // Función para renderizar un solo mensaje en el contenedor
         function renderMessage(data) {
             // 'type' puede ser 'sent' (local) o 'received' (remoto/histórico)
-            const isSelf = data.type === 'sent' || data.userName === LOCAL_USER_NAME; 
-            
+            const isSelf = data.type === 'sent' || data.userName === LOCAL_USER_NAME;
+
             const messageDiv = document.createElement('div');
             messageDiv.className = `flex ${isSelf ? 'justify-end' : 'justify-start'}`;
 
             const contentDiv = document.createElement('div');
-            contentDiv.className = `max-w-[75%] px-4 py-2 rounded-xl shadow-sm ${
-                isSelf ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-            }`;
+            contentDiv.className = `max-w-[75%] px-4 py-2 rounded-xl shadow-sm ${isSelf ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+                }`;
 
             // Contenido: Nombre de usuario (solo si es remoto) y mensaje
             contentDiv.innerHTML = `
@@ -71,7 +70,7 @@
 
             messageDiv.appendChild(contentDiv);
             messagesContainer.appendChild(messageDiv);
-            
+
             // Auto-scroll al fondo
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
@@ -80,27 +79,27 @@
         async function loadMessages() {
             try {
                 // La solicitud GET debe ir a una nueva ruta /getMessages definida en Express
-                const response = await fetch('http://localhost:3000/messages'); 
+                const response = await fetch('http://localhost:3000/messages');
                 if (!response.ok) {
                     throw new Error('No se pudieron cargar los mensajes');
                 }
                 const messages = await response.json();
-                
+
                 // Limpiar el contenedor antes de renderizar
-                messagesContainer.innerHTML = ''; 
+                messagesContainer.innerHTML = '';
 
                 messages.forEach(msg => {
                     // Asegurar que 'type' esté presente (asume recibido si no se especifica)
-                    renderMessage({...msg, type: msg.type || 'received'}); 
+                    renderMessage({ ...msg, type: msg.type || 'received' });
                 });
                 console.log('Mensajes históricos cargados:', messages.length);
 
             } catch (error) {
                 console.error('Error al cargar mensajes:', error);
-                renderMessage({ 
-                    userName: 'Sistema', 
-                    message: 'Error: No se pudo conectar a /getMessages. ¡Define la ruta en el servidor!', 
-                    type: 'system' 
+                renderMessage({
+                    userName: 'Sistema',
+                    message: 'Error: No se pudo conectar a /getMessages. ¡Define la ruta en el servidor!',
+                    type: 'system'
                 });
             }
         }
@@ -108,10 +107,10 @@
         // Función para enviar el mensaje (usando POST)
         async function sendMessage(event) {
             // Previene el comportamiento por defecto del formulario (recargar la página)
-            event.preventDefault(); 
+            event.preventDefault();
 
             const message = messageInput.value.trim();
-            const userName = LOCAL_USER_NAME; 
+            const userName = LOCAL_USER_NAME;
 
             if (message === '') return;
 
@@ -126,7 +125,7 @@
                         'Content-Type': 'application/json'
                     },
                     // Asegúrate de que tu ruta POST maneje el cuerpo JSON correctamente
-                    body: JSON.stringify({ message, userName }) 
+                    body: JSON.stringify({ message, userName })
                 });
 
                 if (!response.ok) {
@@ -138,10 +137,10 @@
             } catch (error) {
                 console.error('Error durante la solicitud POST:', error);
                 // Notificar al usuario que falló el envío
-                renderMessage({ 
-                    userName: 'Sistema', 
-                    message: `Fallo el envío: ${error.message}`, 
-                    type: 'system' 
+                renderMessage({
+                    userName: 'Sistema',
+                    message: `Fallo el envío: ${error.message}`,
+                    type: 'system'
                 });
             }
 

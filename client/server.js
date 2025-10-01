@@ -6,16 +6,18 @@ const connectLivereload = require('connect-livereload');
 const axios = require('axios');
 const app = express();
 
-// --- LiveReload ---
-const liveReloadServer = livereload.createServer();
-liveReloadServer.watch(path.join(__dirname, "view")); // 👈 vigila tu carpeta de vistas
-app.use(connectLivereload());
+if (process.env.NODE_ENV === 'development') {
+  // --- LiveReload ---
+  const liveReloadServer = livereload.createServer();
+  liveReloadServer.watch(path.join(__dirname, "view")); // 👈 vigila tu carpeta de vistas
+  app.use(connectLivereload());
 
-liveReloadServer.server.once("connection", () => {
-  setTimeout(() => {
-    liveReloadServer.refresh("/");
-  }, 100);
-});
+  liveReloadServer.server.once("connection", () => {
+    setTimeout(() => {
+      liveReloadServer.refresh("/");
+    }, 100);
+  });
+}
 
 // --- Configuración de EJS ---
 app.set('view engine', 'ejs');
@@ -32,9 +34,6 @@ const net = require('net');
 //esta libreria permite leer desde la consola
 
 
-
-// 🚨 SOLUCIÓN: Habilitar el middleware para parsear JSON en el cuerpo de las peticiones POST
-app.use(express.json());
 
 const server = {
   port: 3001,
@@ -60,6 +59,8 @@ cliente.on('close', () => {
 });
 
 // --- Rutas ---
+app.use(express.json());
+
 app.get('/chat', (req, res) => {
 
 
