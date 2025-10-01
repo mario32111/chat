@@ -35,14 +35,14 @@
                     </div>
                 </div>
                 <!-- Input -->
-                <form class="flex border-t p-3">
+                <div class="flex border-t p-3">
                     <input type="text" placeholder="Escribe un mensaje..."
                         class="flex-1 border rounded-xl px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300" />
-                    <button type="submit"
+                    <button type="submit" onclick="sendMessage()"
                         class="ml-2 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition">
                         Enviar
                     </button>
-                </form>
+                <div/>
             </div>
         </div>
     </main>
@@ -53,3 +53,34 @@
 </body>
 
 </html>
+
+<script>
+    // **NOTA:** Esto es un ejemplo conceptual. No funcionará con tu `cliente` de net.
+    // Necesitarías implementar Socket.IO o WebSockets en el servidor y en el cliente.
+    function sendMessage() {
+
+        // 1. Obtener el input
+        const inputElement = document.querySelector('input[type="text"]');
+        const message = inputElement.value.trim();
+
+        if (message) {
+            console.log('Mensaje a enviar:', message);
+            fetch('/newMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message })
+            }).then(response => {
+                if (response.ok) {
+                    console.log('Mensaje enviado al servidor');
+                } else {
+                    console.error('Error al enviar el mensaje');
+                }
+            }).catch(error => {
+                console.error('Error en la solicitud:', error);
+            });
+            inputElement.value = ''; // Limpiar el input
+        }
+    }
+</script>
