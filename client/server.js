@@ -18,7 +18,6 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
-require('./config');
 
 // --- Configuración de EJS ---
 app.set('view engine', 'ejs');
