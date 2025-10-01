@@ -1,5 +1,5 @@
 const router = require('express').Router();
-
+const cliente = require('../config');
 
 
 router.get('/chat', (req, res) => {
