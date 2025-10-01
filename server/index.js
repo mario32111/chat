@@ -24,6 +24,23 @@ app.post("/saveMessage", (req, res) => {
     });
 });
 
+app.get("/messages", (req, res) => {
+  db.collection("messages") 
+    .orderBy("timestamp", "asc")
+    .get()
+    .then((snapshot) => {
+        const messages = [];
+        snapshot.forEach((doc) => {
+            messages.push(doc.data());
+        });
+        res.status(200).json(messages);
+    })
+    .catch((error) => {
+        console.error("Error al obtener mensajes: ", error);
+        res.status(500).send("Error al obtener mensajes");
+    });
+
+});
 
 const PORT = 3000;
 app.listen(PORT, () =>
