@@ -18,14 +18,4 @@ app.listen(PORT, () =>
   console.log(`Servidor escuchando en http://localhost:${PORT}`)
 );
 
-
-
-
-
-const { server } = require('./config/socket');
-
-
-
-server.listen(3001, () => {
-    console.log("Servidor escuchando en el puerto", server.address().port);
-});
+require('./config/socket');

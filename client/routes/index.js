@@ -10,8 +10,7 @@ router.post('/newMessage', (req, res) => {
   console.log(req.body);
   const message = req.body.message;
   if (cliente && message) {
-    cliente.write(message + '\n');
-
+    cliente.emit('chat message', message);
     return res.status(201).json({ status: 'success', message: 'Mensaje enviado a servidor NET' });
   } else {
     // Manejar error de conexión o mensaje vacío

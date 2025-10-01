@@ -34,5 +34,5 @@ const routes = require('./routes');
 app.use(routes);
 
 // --- Servidor ---
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`${PORT} is the magic port 🚀`));
