@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
         console.log('message: ' + data);
         try {
             const response = await axios.post(EXPRESS_API_URL, {
-                userName: 'Marito11',
+                userName: data.userName,
                 message: data.message
             });
 
