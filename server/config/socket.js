@@ -6,7 +6,7 @@ const { Server } = require("socket.io");
 const axios = require('axios');
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:8080", "http://localhost:8081"],
+        origin: ["http://localhost:8080", "http://localhost:8081", "http://localhost:3000"],
 
         methods: ["GET", "POST"]
     }

@@ -33,4 +33,16 @@ router.get("/messages", (req, res) => {
 
 });
 
+
+
+router.get('/chat', (req, res) => {
+  res.render('../view/pages/chat');
+});
+
+
+
+router.get('/', (req, res) => {
+  res.render('../view/pages/chat');
+});
+
 module.exports = router;
