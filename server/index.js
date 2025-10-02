@@ -3,6 +3,7 @@ const admin = require("firebase-admin");
 const cors = require("cors");
 const app = express();
 const path = require("path");  // <-- IMPORTANTE
+const connectLivereload = require('connect-livereload');
 
 app.use(cors());
 app.use(express.json());
@@ -12,6 +13,19 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 const db = admin.firestore();
+
+if (process.env.NODE_ENV === 'development') {
+  // --- LiveReload ---
+  const liveReloadServer = livereload.createServer();
+  liveReloadServer.watch(path.join(__dirname, "view")); // 👈 vigila tu carpeta de vistas
+  app.use(connectLivereload());
+
+  liveReloadServer.server.once("connection", () => {
+    setTimeout(() => {
+      liveReloadServer.refresh("/");
+    }, 100);
+  });
+}
 
 app.use("/", require("./routes/index"));
 app.use(express.static(path.join(__dirname, "public")));
